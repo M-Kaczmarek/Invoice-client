@@ -5,14 +5,25 @@ import DataTable from './DataTable/DataTable'
 class Find extends React.Component {
     state = {
         companies: [],
+        input: "",
+    }
+
+    change = (e) => {
+
+        this.setState({ input: e.target.value })
     }
 
     findCompany = (e) => {
         e.preventDefault();
+        this.setState({ input: e.target[0].value })
         fetch("http://localhost:9090/api/company/" + e.target[0].value)
             .then(response => response.json())
-            .then(i => this.setState({ companies: i })
+            .then(i => this.setState({
+                companies: i,
+                input: ""
+            })
             )
+
 
     }
     // .then(i => this.setState({ companies: i }));
@@ -23,7 +34,7 @@ class Find extends React.Component {
         return (
             <>
                 <form onSubmit={this.findCompany} className="form-inline mt-3">
-                    <input type="number" class="form-control" id="inputPassword2" placeholder="Password" />
+                    <input type="number" class="form-control" placeholder="ID" value={this.state.input} onChange={this.change} />
                     <button type="submit" className="btn btn-primary ">SEARCH</button>
                 </form>
                 <table class="table">
@@ -38,7 +49,6 @@ class Find extends React.Component {
                     </thead>
                     <tbody>
                         {this.state.companies.length === 0 ? "Nic" :
-
                             <DataTable data={this.state.companies} />
                         }
                     </tbody>
