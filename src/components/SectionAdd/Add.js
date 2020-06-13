@@ -1,10 +1,17 @@
 import React from 'react';
+import Form from './Form/Form'
 
 
 class Add extends React.Component {
     state = {
         companies: [],
+        name: "",
+        Amount: "",
+        nameI: "",
+        surrName: "",
+        internationalTransport: false
     }
+
     componentDidMount() {
         fetch("http://localhost:9090/api/company", {
             method: "POST"
@@ -24,44 +31,73 @@ class Add extends React.Component {
                 })
         }
         )
+    }
+
+    change = (type, e) => {
+        switch (type) {
+            case "name":
+                this.setState({
+                    name: e.target.value
+                })
+                break;
+            case "Amount":
+                this.setState({
+                    Amount: e.target.value
+                })
+                break;
+            case "nameI":
+                this.setState({
+                    nameI: e.target.value
+                })
+                break;
+            case "surrName":
+                this.setState({
+                    surrName: e.target.value
+                })
+                break;
+            case "internationalTransport":
+                this.setState({
+                    internationalTransport: e.target.value.checked
+                })
+                break;
+        }
+    }
+    addElement = (e) => {
+        e.preventDefault();
+        fetch("http://localhost:8080/api/company", {
+            method: "POST"
+            , headers: {
+                'Content-Type': 'application/json'
+            }, body: JSON.stringify(
+                {
+                    "name": e.target[0].value,
+                    "invoices": [
+                        {
+                            "amount": e.target[1].value,
+                            "name": e.target[2].value,
+                            "surrName": e.target[3].value
+                        }
+                    ], "internationalTransport": e.target[4].checked === true ? true : false
+                })
+        }
+        ).then(this.setState({
+            name: "",
+            Amount: "",
+            nameI: "",
+            surrName: "",
+            internationalTransport: false
+
+        })
+
+        )
 
     }
 
     render() {
         return (
-            <>
-                <>
-                    <form>
-                        <div class="form-group row">
-                            <label for="name" class="col-sm-2 col-form-label">Company Name</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="name" placeholder="Company Name" />
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="invoices" class="col-sm-2 col-form-label">Password</label>
-                            <div class="col-sm-10">
-                                <input type="number" class="form-control" id="invoices" placeholder="Amount" />
-                                <input type="text" class="form-control" id="invoices" placeholder="Name" />
-                                <input type="text" class="form-control" id="invoices" placeholder="Surrname" />
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-sm-2"> International Transport</div>
-                            <div class="col-sm-10">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="International" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-sm-10">
-                                <button type="submit" class="btn btn-primary">Add</button>
-                            </div>
-                        </div>
-                    </form>
-                </>
-            </>
+
+            <Form submitFn={this.addElement} data={this.state} change={this.change} />
+
         )
     }
 }

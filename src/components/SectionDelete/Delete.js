@@ -8,14 +8,14 @@ class Delete extends React.Component {
     }
     componentDidMount() {
 
-        fetch("http://localhost:9090/api/company")
+        fetch("http://localhost:8080/api/company")
             .then(response => response.json())
             .then(i => this.setState({ companies: i }));
 
     }
 
     deleteElement = (x) => {
-        fetch("http://localhost:9090/api/company/" + x, {
+        fetch("http://localhost:8080/api/company/" + x, {
             method: "DELETE",
             headers: {
                 'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
