@@ -1,13 +1,13 @@
 import React from 'react';
 
-const DataTable = (props) => {
+const DataTable = ({ data }) => {
     return (
         <tr>
-            <th scope="row">{"X"}</th>
-            <td>{props.data.id}</td>
-            <td>{props.data.name}</td>
-            <td>{props.data.invoices.lenght}</td>
-            <td>{props.data.internationalTransport.toString()}</td>
+            <th scope="row" > </th>
+            <td>{data.id}</td>
+            <td>{data.name}</td>
+            <td>{data.invoices.length}</td>
+            <td>{data.internationalTransport.toString()}</td>
         </tr>
     )
 }

@@ -6,22 +6,45 @@ class Find extends React.Component {
     state = {
         companies: [],
     }
-    componentDidMount() {
-        fetch("http://localhost:9090/api/company")
+
+    findCompany = (e) => {
+        e.preventDefault();
+        fetch("http://localhost:9090/api/company/" + e.target[0].value)
             .then(response => response.json())
-            .then(i => this.setState({ companies: i }));
+            .then(i => this.setState({ companies: i })
+            )
+
     }
+    // .then(i => this.setState({ companies: i }));
 
     render() {
 
 
         return (
+            <>
+                <form onSubmit={this.findCompany} className="form-inline mt-3">
+                    <input type="number" class="form-control" id="inputPassword2" placeholder="Password" />
+                    <button type="submit" className="btn btn-primary ">SEARCH</button>
+                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">id</th>
+                            <th scope="col">name</th>
+                            <th scope="col">Count invoices</th>
+                            <th scope="col">International Transport</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.companies.length === 0 ? "Nic" :
 
-            <form action="" className="form-inline mt-3">
-                <input type="number" class="form-control" id="inputPassword2" placeholder="Password" />
-                <button type="submit" className="btn btn-primary ">SEARCH</button>
+                            <DataTable data={this.state.companies} />
+                        }
+                    </tbody>
+                </table>
+            </>
 
-            </form>
         )
     }
 
