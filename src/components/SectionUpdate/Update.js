@@ -6,12 +6,13 @@ class Update extends React.Component {
     state = {
         companies: [],
         id: "",
+        idInvoices: "",
         click: false,
         name: "",
         Amount: "",
         nameI: "",
         surrName: "",
-        internationalTransport: false
+        internationalTransport: ""
     }
 
     componentDidMount() {
@@ -19,11 +20,7 @@ class Update extends React.Component {
             .then(response => response.json())
             .then(i => this.setState({ companies: i }));
     }
-    componentDidUpdate() {
-        fetch("http://localhost:8080/api/company")
-            .then(response => response.json())
-            .then(i => this.setState({ companies: i }))
-    }
+
 
     change = (type, e) => {
         switch (type) {
@@ -58,6 +55,7 @@ class Update extends React.Component {
     }
     addElement = (e) => {
         e.preventDefault();
+        console.log(e.target[4].checked)
         this.setState({
             name: e.target[0].value,
             Amount: e.target[1].value,
@@ -65,6 +63,21 @@ class Update extends React.Component {
             surrName: e.target[3].value,
             internationalTransport: e.target[4].checked,
         })
+
+        console.log(this.state.internationalTransport)
+        const tab = {
+            name: this.state.name,
+            internationalTransport: this.state.internationalTransport,
+            invoices: [
+                {
+                    id: this.state.idInvoices,
+                    amount: this.state.Amount,
+                    name: this.state.nameI,
+                    surrName: this.state.surrName,
+                }
+            ]
+        }
+        console.log(this.state.internationalTransport)
         fetch("http://localhost:8080/api/company/" + this.state.id, {
             method: "PUT"
             , headers: {
@@ -75,6 +88,7 @@ class Update extends React.Component {
                     ,
                     "invoices": [
                         {
+                            "id": this.state.idInvoices,
                             "amount": this.state.Amount,
                             "name": this.state.nameI,
                             "surrName": this.state.surrName,
@@ -88,11 +102,14 @@ class Update extends React.Component {
             Amount: "",
             nameI: "",
             surrName: "",
-            internationalTransport: false,
+            internationalTransport: "",
             click: false,
         })
+        ).then(
+            fetch("http://localhost:8080/api/company")
+                .then(response => response.json())
+                .then(i => this.setState({ companies: i }))
         )
-
     }
 
     click = (id) => {
@@ -102,25 +119,23 @@ class Update extends React.Component {
                 index = i
             }
         }
-        console.log(this.state.companies[index].invoices[0])
+        console.log(this.state.companies[index].internationalTransport.toString())
         this.setState({
-
             id: this.state.companies[index].id,
             name: this.state.companies[index].name,
+            idInvoices: this.state.companies[index].invoices[0].id,
             Amount: this.state.companies[index].invoices[0].amount,
             nameI: this.state.companies[index].invoices[0].name,
             surrName: this.state.companies[index].invoices[0].surrName,
-            internationalTransport: this.state.companies[index].internationalTransport,
+            internationalTransport: this.state.companies[index].internationalTransport.toString(),
             click: true
         })
-
     }
-
-
     render() {
         return (
             <>
                 {this.state.click ?
+
                     <Form submitFn={this.addElement} data={this.state} change={this.change} /> :
                     <table class="table">
                         <thead>
@@ -138,7 +153,6 @@ class Update extends React.Component {
                                 <UpdateData
                                     data={item}
                                     click={this.click.bind(this, item.id)}
-
                                 />))}
 
                         </tbody>

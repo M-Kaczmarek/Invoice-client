@@ -21,6 +21,7 @@ const Form = ({ submitFn, data, change }) => {
                 <div class="col-sm-2"> International Transport</div>
                 <div class="col-sm-10">
                     <div class="form-check">
+                        {console.log(data.internationalTransport + " sdadasd")}
                         <input class="form-check-input" type="checkbox" id="International" checked={data.internationalTransport} onChange={change.bind(this, "internationalTransport")} />
                     </div>
                 </div>

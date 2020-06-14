@@ -12,6 +12,7 @@ class Find extends React.Component {
     }
 
     findCompany = (e) => {
+        e.preventDefault();
         this.setState({ input: e.target[0].value })
         fetch("http://localhost:8080/api/company/" + e.target[0].value)
             .then(response => response.json())
