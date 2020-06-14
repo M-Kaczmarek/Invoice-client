@@ -1,7 +1,6 @@
 import React from 'react';
 import DataTable from './DataTable/DataTable'
 
-
 class Find extends React.Component {
     state = {
         companies: [],
@@ -9,12 +8,10 @@ class Find extends React.Component {
     }
 
     change = (e) => {
-
         this.setState({ input: e.target.value })
     }
 
     findCompany = (e) => {
-
         this.setState({ input: e.target[0].value })
         fetch("http://localhost:8080/api/company/" + e.target[0].value)
             .then(response => response.json())
@@ -23,14 +20,9 @@ class Find extends React.Component {
                 input: ""
             })
             )
-
-
     }
-    // .then(i => this.setState({ companies: i }));
 
     render() {
-
-
         return (
             <>
                 <form onSubmit={this.findCompany} className="form-inline mt-3">
@@ -54,9 +46,7 @@ class Find extends React.Component {
                     </tbody>
                 </table>
             </>
-
         )
     }
-
 }
 export default Find;

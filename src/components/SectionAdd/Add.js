@@ -60,6 +60,8 @@ class Add extends React.Component {
                     internationalTransport: e.target.value.checked
                 })
                 break;
+            default:
+                break;
         }
     }
     addElement = (e) => {
