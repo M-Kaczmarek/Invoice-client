@@ -1,6 +1,7 @@
 import React from 'react';
 import DataTable from './DataTable/DataTable'
 
+const API_ADDRESS = "http://localhost:8080/api/company/";
 class Find extends React.Component {
     state = {
         companies: [],
@@ -8,19 +9,18 @@ class Find extends React.Component {
     }
 
     change = (e) => {
-        this.setState({ input: e.target.value })
+        this.setState({ input: e.target.value });
     }
 
     findCompany = (e) => {
         e.preventDefault();
-        this.setState({ input: e.target[0].value })
-        fetch("http://localhost:8080/api/company/" + e.target[0].value)
+        this.setState({ input: e.target[0].value });
+        fetch(API_ADDRESS + e.target[0].value)
             .then(response => response.json())
             .then(i => this.setState({
                 companies: i,
                 input: ""
-            })
-            )
+            })).catch(() => { }).finally(this.setState({ input: "" }));
     }
 
     render() {
@@ -41,13 +41,14 @@ class Find extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.companies.length === 0 ? "Nic" :
+                        {this.state.companies.length === 0 ? "There is nothing" :
                             <DataTable data={this.state.companies} />
                         }
                     </tbody>
                 </table>
             </>
-        )
+        );
     }
 }
+
 export default Find;

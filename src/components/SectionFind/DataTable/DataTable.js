@@ -7,8 +7,9 @@ const DataTable = ({ data }) => {
             <td>{data.id}</td>
             <td>{data.name}</td>
             <td>{data.invoices.length}</td>
-            <td>{data.internationalTransport.toString()}</td>
+            <td>{data.internationalTransport}</td>
         </tr>
     )
 }
+
 export default DataTable;

@@ -1,17 +1,16 @@
 import React from 'react';
 import DataTableDel from './DataTableDel/DataTable'
 
+const API_ADDRESS = "http://localhost:8080/api/company/";
 
 class Delete extends React.Component {
     state = {
         companies: [],
     }
     componentDidMount() {
-
-        fetch("http://localhost:8080/api/company")
+        fetch(API_ADDRESS)
             .then(response => response.json())
-            .then(i => this.setState({ companies: i }));
-
+            .then(i => this.setState({ companies: i })).catch(() => { });
     }
 
     deleteElement = (x) => {
@@ -20,19 +19,17 @@ class Delete extends React.Component {
             headers: {
                 'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
             }
-        })
-
+        }).catch(() => { });
         let tab = [];
         for (let i = 0; i < this.state.companies.length; i++) {
             if (this.state.companies[i].id !== x) {
-                tab.push(this.state.companies[i])
+                tab.push(this.state.companies[i]);
             }
         }
 
         this.setState({
             companies: tab
         });
-
     }
 
     render() {
@@ -49,16 +46,18 @@ class Delete extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.companies.length === 0 ? "Nic" : this.state.companies.map(item => (
-                            <DataTableDel
-                                data={item}
-                                fun={this.deleteElement.bind(this, item.id)}
-                            />))}
+                        {
+                            this.state.companies.length === 0 ? "There is nothing" : this.state.companies.map(item => (
+                                <DataTableDel
+                                    data={item}
+                                    fun={this.deleteElement.bind(this, item.id)}
+                                />))
+                        }
                     </tbody>
                 </table>
-
             </>
-        )
+        );
     }
 }
+
 export default Delete;

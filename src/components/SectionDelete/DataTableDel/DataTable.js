@@ -2,7 +2,6 @@ import React from 'react';
 
 
 const DataTableDel = ({ data, fun }) => {
-
     return (
         <tr>
             <th scope="row"  > <button className="btn btn-primary" onClick={fun}>{"X"}</button></th>
